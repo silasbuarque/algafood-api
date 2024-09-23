@@ -1,4 +1,4 @@
-package com.buarque.algafood.infraestructure.repository;
+package com.buarque.algafood.infraestructure;
 
 import com.buarque.algafood.domais.model.Cozinha;
 import com.buarque.algafood.domais.repository.CozinhaRepository;
@@ -22,20 +22,21 @@ public class CozinhaRepositoryImpl implements CozinhaRepository {
     }
 
     @Override
-    public Cozinha busca(Long id) {
+    public Cozinha buscar(Long id) {
         return manager.find(Cozinha.class, id);
     }
 
-    @Override
     @Transactional
+    @Override
     public Cozinha salvar(Cozinha cozinha) {
         return manager.merge(cozinha);
     }
 
-    @Override
     @Transactional
+    @Override
     public void remover(Cozinha cozinha) {
-        cozinha = busca(cozinha.getId());
-        manager.refresh(cozinha);
+        cozinha = buscar(cozinha.getId());
+        manager.remove(cozinha);
     }
+
 }
