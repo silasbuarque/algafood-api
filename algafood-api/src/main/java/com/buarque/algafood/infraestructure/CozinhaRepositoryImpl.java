@@ -2,6 +2,7 @@ package com.buarque.algafood.infraestructure;
 
 import com.buarque.algafood.domais.model.Cozinha;
 import com.buarque.algafood.domais.repository.CozinhaRepository;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
@@ -34,8 +35,13 @@ public class CozinhaRepositoryImpl implements CozinhaRepository {
 
     @Transactional
     @Override
-    public void remover(Cozinha cozinha) {
-        cozinha = buscar(cozinha.getId());
+    public void remover(Long cozinhaId) {
+        Cozinha cozinha = buscar(cozinhaId);
+
+        if (cozinha == null) {
+            throw new EmptyResultDataAccessException(1);
+        }
+
         manager.remove(cozinha);
     }
 
