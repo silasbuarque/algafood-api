@@ -1,25 +1,27 @@
-package com.algafood.algafoodapi.jpa;
+package com.algafood.algafoodapi.jpa.cozinhas;
 
 import com.algafood.algafoodapi.AlgafoodApiApplication;
 import com.algafood.algafoodapi.domain.model.Cozinha;
+import com.algafood.algafoodapi.domain.repository.CozinhaRepository;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
 
-public class ExclusaoCozinhaMain {
+import java.util.List;
+
+public class ConsultaCozinhaMain {
 
     public static void main(String[] args) {
-
         ApplicationContext applicationContext = new SpringApplicationBuilder(AlgafoodApiApplication.class)
                 .web(WebApplicationType.NONE)
                 .run(args);
 
-        CadastroCozinha cadastroCozinha = applicationContext.getBean(CadastroCozinha.class);
+        CozinhaRepository cozinhaRepository = applicationContext.getBean(CozinhaRepository.class);
+        List<Cozinha> listar = cozinhaRepository.listar();
 
-        Cozinha cozinha = new Cozinha();
-        cozinha.setId(1L);
-
-        cadastroCozinha.remover(cozinha);
+        for (Cozinha cozinha : listar) {
+            System.out.println(cozinha.getNome());
+        }
 
     }
 
