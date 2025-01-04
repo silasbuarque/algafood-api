@@ -2,6 +2,7 @@ package com.algafood.algafoodapi.infrestructure;
 
 import com.algafood.algafoodapi.domain.model.Restaurante;
 import com.algafood.algafoodapi.domain.repository.RestauranteRepository;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
