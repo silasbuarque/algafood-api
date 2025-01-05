@@ -13,6 +13,8 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class CadastroCidadeService {
 
@@ -25,21 +27,21 @@ public class CadastroCidadeService {
     public Cidade salvar(Cidade cidade) {
 
         Long estadoId = cidade.getEstado().getId();
-        Estado estado = estadoRepository.buscar(estadoId);
 
-        if (estado == null) {
-            throw new EntidadeNaoEncontradaException(String.format("Estado de id %d não encontrado", estadoId));
-        }
+        Estado estado = estadoRepository.findById(estadoId)
+                .orElseThrow(() -> new EntidadeNaoEncontradaException(
+                        String.format("Estado de id %d não encontrado", estadoId)));
+
 
         cidade.setEstado(estado);
 
-        return cidadeRepository.salvar(cidade);
+        return cidadeRepository.save(cidade);
     }
 
     public void remover(Long id) {
 
         try {
-            cidadeRepository.remover(id);
+            cidadeRepository.deleteById(id);
         } catch (EmptyResultDataAccessException e) {
             throw new EntidadeNaoEncontradaException(String.format("Cidade de id %d não foi encontrado", id));
         }
