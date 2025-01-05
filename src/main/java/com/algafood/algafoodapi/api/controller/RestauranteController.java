@@ -1,9 +1,7 @@
 package com.algafood.algafoodapi.api.controller;
 
 import com.algafood.algafoodapi.domain.exception.EntidadeNaoEncontradaException;
-import com.algafood.algafoodapi.domain.model.Cozinha;
 import com.algafood.algafoodapi.domain.model.Restaurante;
-import com.algafood.algafoodapi.domain.repository.CozinhaRepository;
 import com.algafood.algafoodapi.domain.repository.RestauranteRepository;
 import com.algafood.algafoodapi.domain.service.CadastroRestauranteService;
 import com.fasterxml.jackson.databind.ObjectMapper;
