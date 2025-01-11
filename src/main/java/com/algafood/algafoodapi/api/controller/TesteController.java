@@ -4,10 +4,10 @@ import com.algafood.algafoodapi.domain.model.Cozinha;
 import com.algafood.algafoodapi.domain.model.Restaurante;
 import com.algafood.algafoodapi.domain.repository.CozinhaRepository;
 import com.algafood.algafoodapi.domain.repository.RestauranteRepository;
+import com.algafood.algafoodapi.infrestructure.repository.spec.RestaurantesSpecs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
@@ -70,5 +70,11 @@ public class TesteController {
     public List<Restaurante> restaurantesPorNomeEFrete(String nome, BigDecimal taxaInicial, BigDecimal taxaFinal) {
         return restauranteRepository.find(nome, taxaInicial, taxaFinal);
     }
+
+    @GetMapping("/restaurantes/com-frete-gratis")
+    public List<Restaurante> restaurantesComFreteGratis(String nome) {
+        return restauranteRepository.findAll(RestaurantesSpecs.comFreteGratis().and(RestaurantesSpecs.comNomeSemelhante(nome)));
+    }
+
 
 }
