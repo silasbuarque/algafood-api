@@ -1,5 +1,6 @@
 package com.algafood.algafoodapi.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -23,6 +24,7 @@ public class Restaurante {
     @Column(name = "taxa_frete", nullable = false)
     private BigDecimal taxaFrete;
 
+//    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "cozinha_id", nullable = false) // Caso eu queria trocar o nome da coluna id
     private Cozinha cozinha;
