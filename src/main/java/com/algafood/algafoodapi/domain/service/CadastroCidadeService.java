@@ -1,19 +1,13 @@
 package com.algafood.algafoodapi.domain.service;
 
-import com.algafood.algafoodapi.domain.exception.EntidadeEmUsoException;
 import com.algafood.algafoodapi.domain.exception.EntidadeNaoEncontradaException;
 import com.algafood.algafoodapi.domain.model.Cidade;
 import com.algafood.algafoodapi.domain.model.Estado;
 import com.algafood.algafoodapi.domain.repository.CidadeRepository;
 import com.algafood.algafoodapi.domain.repository.EstadoRepository;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public class CadastroCidadeService {
