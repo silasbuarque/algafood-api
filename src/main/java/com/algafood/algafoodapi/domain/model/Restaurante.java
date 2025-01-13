@@ -6,7 +6,8 @@ import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.Objects;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -28,5 +29,22 @@ public class Restaurante {
     @ManyToOne
     @JoinColumn(name = "cozinha_id", nullable = false) // Caso eu queria trocar o nome da coluna id
     private Cozinha cozinha;
+
+    /**
+     *  name = tabela que irá pegar FK de restaurante e forma de pagamento para
+     *  fazer o relacionamento entre as duas entidades;
+     *
+     *  joinColmns = id da FK da nova tabela que irá fazer o relacionamento entre
+     *  restaurante e forma de pagamento
+     *
+     *  inverseJoinColumns = FK da tabela "inversa", que seria forma de pagamento
+     */
+    @JsonIgnore
+    @ManyToMany
+    @JoinTable(name = "restaurante_forma_pagamento",
+                joinColumns = @JoinColumn(name = "restaurante_id"),
+                inverseJoinColumns = @JoinColumn(name = "forma_pagamento_id"))
+    private List<FormaPagamento> formasPagamento = new ArrayList<>();
+
 
 }
