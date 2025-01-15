@@ -31,6 +31,13 @@ public class Restaurante {
     private Cozinha cozinha;
 
     /**
+     * @Embedded indica que a classe "Endereço"
+     * faz parte da classe Restaurante
+     */
+    @Embedded
+    private Endereco endereco;
+
+    /**
      *  name = tabela que irá pegar FK de restaurante e forma de pagamento para
      *  fazer o relacionamento entre as duas entidades;
      *
@@ -45,6 +52,5 @@ public class Restaurante {
                 joinColumns = @JoinColumn(name = "restaurante_id"),
                 inverseJoinColumns = @JoinColumn(name = "forma_pagamento_id"))
     private List<FormaPagamento> formasPagamento = new ArrayList<>();
-
 
 }
