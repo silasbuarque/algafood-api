@@ -1,19 +1,16 @@
 package com.algafood.algafoodapi.domain.model;
 
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonRootName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
-@JsonRootName("cozinha")
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
-public class Cozinha {
+public class Grupo {
 
     @EqualsAndHashCode.Include
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,12 +20,9 @@ public class Cozinha {
     @Column(nullable = false)
     private String nome;
 
-    /**
-     * mappedBy = Nome do atributo Cozinha que está mapeado na classe Restaurante
-     */
-    @JsonIgnore
-    @OneToMany(mappedBy = "cozinha")
-    private List<Restaurante> restaurantes;
-
+    @ManyToMany
+    @JoinTable(name = "grupo_permissoes",
+            joinColumns = @JoinColumn(name = "grupo_id"),
+            inverseJoinColumns = @JoinColumn(name = "permissao_id"))
+    private List<Permissao> permissoes = new ArrayList<>();
 }
-
