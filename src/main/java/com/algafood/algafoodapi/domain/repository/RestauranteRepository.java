@@ -1,8 +1,8 @@
 package com.algafood.algafoodapi.domain.repository;
 
 import com.algafood.algafoodapi.domain.model.Restaurante;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
@@ -12,6 +12,22 @@ import java.util.Optional;
 
 @Repository
 public interface RestauranteRepository extends CustomJpaRepository<Restaurante, Long>, RestauranteRepositoryQueries, JpaSpecificationExecutor<Restaurante> {
+
+    /**
+     * Fazemos uma consulta personalizada para que não seja necessário,
+     * na hora de buscar os dados, fazer tantas consultas.
+     *
+     * Para os "ToOne" (que é o caso da cozinha), apenas "join fetch"
+     * funciona.
+     *
+     * Já para "ToMany" (o formasPagamento), é necessário utilizar o "left
+     * join fetch". Pq caso o Restaurante não tenha nenhuma forma de pagamento,
+     * ele será retornado do mesmo jeito. Se utilizarmos apenas o Join Fetch,
+     * o restaurante que não tiver formasPagamento, não será retornado.
+     *
+     */
+    @Query("from Restaurante r join fetch r.cozinha left join fetch r.formasPagamento")
+    List<Restaurante> findAll();
 
     List<Restaurante> queryByTaxaFreteBetween(BigDecimal taxaInicial, BigDecimal taxaFinal);
 
