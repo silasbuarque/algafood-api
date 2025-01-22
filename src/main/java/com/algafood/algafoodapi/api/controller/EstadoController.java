@@ -30,18 +30,12 @@ public class EstadoController {
     }
 
     @GetMapping("/{estadoId}")
-    public ResponseEntity<Estado> buscar(@PathVariable Long estadoId) {
-        Optional<Estado> estado = estadoRepository.findById(estadoId);
-
-        if (estado.isPresent()) {
-            return ResponseEntity.ok(estado.get());
-        }
-
-        return ResponseEntity.notFound().build();
+    public Estado buscar(@PathVariable Long estadoId) {
+        return estadoService.buscarOuFalhar(estadoId);
     }
 
     @PostMapping
-    public ResponseEntity<Estado> salvar(@RequestBody Estado estado) {
+    public ResponseEntity<Estado> adicionar(@RequestBody Estado estado) {
         estado = estadoService.salvar(estado);
         return ResponseEntity.status(HttpStatus.CREATED).body(estado);
     }
