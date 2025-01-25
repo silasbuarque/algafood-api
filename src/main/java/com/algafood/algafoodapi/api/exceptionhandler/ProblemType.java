@@ -8,7 +8,7 @@ public enum ProblemType {
     PARAMETRO_INVALIDO("/parametro-invalido", "Parametro invalido"),
     REQUISICAO_INVALIDA("/requisicao-invalida", "Requisição inválida"),
     MENSAGEM_INCOMPREENSIVEL("/menssagem-incompreensivel", "Mensagem incompreensivel"),
-    ENTIDADE_NAO_ENCONTRADA("/entidade-nao-encontrada", "Entidade nao encontrada"),
+    RECURSO_NAO_ENCONTRADO("/recurso-nao-encontrado", "Recurso nao encontrado"),
     ENTIDADE_EM_USO("/entidade-em-uso", "Entidade em uso"),
     ERRO_NEGOCIO("/regra-de-negocio-violada", "Regra de negocio foi violada");
 
