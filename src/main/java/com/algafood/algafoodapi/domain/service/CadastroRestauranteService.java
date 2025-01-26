@@ -1,6 +1,7 @@
 package com.algafood.algafoodapi.domain.service;
 
 import com.algafood.algafoodapi.domain.exception.EntidadeNaoEncontradaException;
+import com.algafood.algafoodapi.domain.exception.RestauranteNaoEncontradoException;
 import com.algafood.algafoodapi.domain.model.Cozinha;
 import com.algafood.algafoodapi.domain.model.Restaurante;
 import com.algafood.algafoodapi.domain.repository.CozinhaRepository;
@@ -15,20 +16,21 @@ public class CadastroRestauranteService {
     private RestauranteRepository restauranteRepository;
 
     @Autowired
-    private CozinhaRepository cozinhaRepository;
+    private CadastroCozinhaService cozinhaService;
 
     public Restaurante salvar(Restaurante restaurante) {
 
         Long cozinhaId = restaurante.getCozinha().getId();
 
-        Cozinha cozinha = cozinhaRepository.findById(cozinhaId)
-                .orElseThrow(() -> new EntidadeNaoEncontradaException(
-                        String.format("Cozinha de id %d não existe.", cozinhaId)));
-
+        Cozinha cozinha = cozinhaService.buscarOuFalhar(cozinhaId);
 
         restaurante.setCozinha(cozinha);
 
         return restauranteRepository.save(restaurante);
     }
 
+    public Restaurante buscarOuFalhar(Long restauranteId) {
+        return restauranteRepository.findById(restauranteId)
+                .orElseThrow(()-> new RestauranteNaoEncontradoException(restauranteId));
+    }
 }
