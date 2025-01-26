@@ -168,15 +168,17 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
         if (body == null) {
             body = Problem.builder()
+                    .timestamp(LocalDateTime.now())
                     .title(status.getReasonPhrase())
                     .status(status.value())
-                    .timestamp(LocalDateTime.now())
+                    .userMessage(MSG_ERRO_GENERICA_USUARIO_FINAL)
                     .build();
         } else if (body instanceof String) {
             body = Problem.builder()
+                    .timestamp(LocalDateTime.now())
                     .title((String) body)
                     .status(status.value())
-                    .timestamp(LocalDateTime.now())
+                    .userMessage(MSG_ERRO_GENERICA_USUARIO_FINAL)
                     .build();
         }
 
@@ -185,11 +187,11 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
     private Problem.ProblemBuilder ProblemCreateBuilder(HttpStatus status, ProblemType problemType, String detail) {
         return Problem.builder()
+                .timestamp(LocalDateTime.now())
                 .status(status.value())
                 .title(problemType.getTitle())
                 .type(problemType.getPath())
-                .detail(detail)
-                .timestamp(LocalDateTime.now());
+                .detail(detail);
     }
 
     private static String getFieldName(List<Reference> ex) {
