@@ -7,7 +7,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -23,10 +23,14 @@ public class Restaurante {
     @Id
     private Long id;
 
-    @NotNull
+//    @NotNull -> Não aceita null, mas aceita string vazia
+//    @NotEmpty -> Não aceita null e nem String vazia, mas aceita String com espaço
+    @NotBlank // -> Não aceita null, String vazia e nem String com espaço
     @Column(nullable = false)
     private String nome;
 
+//    @DecimalMin("0") -> Só aceita valor igual ou maior que o especificado
+    @PositiveOrZero // ->
     @Column(name = "taxa_frete", nullable = false)
     private BigDecimal taxaFrete;
 
