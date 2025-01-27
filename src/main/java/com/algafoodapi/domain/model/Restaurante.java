@@ -10,6 +10,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
+import javax.validation.groups.ConvertGroup;
+import javax.validation.groups.Default;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -27,12 +29,12 @@ public class Restaurante {
 
 //    @NotNull -> Não aceita null, mas aceita string vazia
 //    @NotEmpty -> Não aceita null e nem String vazia, mas aceita String com espaço
-    @NotBlank(groups = Groups.CadastroRestaurante.class) // -> Não aceita null, String vazia e nem String com espaço
+    @NotBlank // -> Não aceita null, String vazia e nem String com espaço
     @Column(nullable = false)
     private String nome;
 
 //    @DecimalMin("0") -> Só aceita valor igual ou maior que o especificado
-    @PositiveOrZero(groups = Groups.CadastroRestaurante.class) // -> Aceita numeros positivos ou zero;
+    @PositiveOrZero // -> Aceita numeros positivos ou zero;
     @Column(name = "taxa_frete", nullable = false)
     private BigDecimal taxaFrete;
 
@@ -46,7 +48,8 @@ public class Restaurante {
      */
 //    @JsonIgnore
     @Valid
-    @NotNull(groups = Groups.CadastroRestaurante.class)
+    @ConvertGroup(from = Default.class, to = Groups.CozinhaId.class)
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "cozinha_id", nullable = false) // Caso eu queria trocar o nome da coluna id
     private Cozinha cozinha;
