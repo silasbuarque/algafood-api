@@ -7,6 +7,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -43,6 +44,8 @@ public class Restaurante {
      * "ToOne", ele já vai carregar pra gente.
      */
 //    @JsonIgnore
+    @Valid
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "cozinha_id", nullable = false) // Caso eu queria trocar o nome da coluna id
     private Cozinha cozinha;
