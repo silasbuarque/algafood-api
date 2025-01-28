@@ -16,12 +16,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
-import org.springframework.web.servlet.LocaleContextResolver;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
@@ -50,13 +50,19 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
         BindingResult bindingResult = ex.getBindingResult();
 
-        List<Problem.Field> problemFields = bindingResult.getFieldErrors().stream()
-                .map(fieldError ->  {
+        List<Problem.Object> problemObjects = bindingResult.getAllErrors().stream()
+                .map(objectError ->  {
 
-                        String message = messageSource.getMessage(fieldError, LocaleContextHolder.getLocale());
+                        String message = messageSource.getMessage(objectError, LocaleContextHolder.getLocale());
 
-                        return Problem.Field.builder()
-                            .name(fieldError.getField())
+                        String name = objectError.getObjectName();
+
+                        if (objectError instanceof FieldError) {
+                            name = ((FieldError) objectError).getField();
+                        }
+
+                        return Problem.Object.builder()
+                            .name(name)
                             .userMessage(message)
                             .build();
 
@@ -65,7 +71,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
         Problem problem = ProblemCreateBuilder(status, problemType, detail)
                 .userMessage(detail)
-                .fields(problemFields)
+                .objects(problemObjects)
                 .build();
 
         return handleExceptionInternal(ex, problem, headers, status, request);
@@ -156,7 +162,9 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
         ProblemType problemType = ProblemType.ERRO_SISTEMA;
 
-        Problem problem = ProblemCreateBuilder(status, problemType, MSG_ERRO_GENERICA_USUARIO_FINAL).build();
+        Problem problem = ProblemCreateBuilder(status, problemType, MSG_ERRO_GENERICA_USUARIO_FINAL)
+                .userMessage(MSG_ERRO_GENERICA_USUARIO_FINAL)
+                .build();
 
         return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
     }

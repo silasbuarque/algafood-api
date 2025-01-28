@@ -37,8 +37,8 @@ public class Restaurante {
     private String nome;
 
 //    @DecimalMin("0") -> Só aceita valor igual ou maior que o especificado
-//    @PositiveOrZero // -> Aceita numeros positivos ou zero;
 //    @Multiplo(numero = 5)
+    @PositiveOrZero // -> Aceita numeros positivos ou zero;
     @Column(name = "taxa_frete", nullable = false)
     private BigDecimal taxaFrete;
 
