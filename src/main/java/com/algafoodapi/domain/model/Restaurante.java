@@ -1,7 +1,7 @@
 package com.algafoodapi.domain.model;
 
 import com.algafoodapi.core.validation.Groups;
-import com.algafoodapi.core.validation.TaxaFrete;
+import com.algafoodapi.core.validation.Multiplo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -36,7 +36,7 @@ public class Restaurante {
 
 //    @DecimalMin("0") -> Só aceita valor igual ou maior que o especificado
 //    @PositiveOrZero // -> Aceita numeros positivos ou zero;
-    @TaxaFrete
+    @Multiplo(numero = 5)
     @Column(name = "taxa_frete", nullable = false)
     private BigDecimal taxaFrete;
 
