@@ -1,9 +1,9 @@
 package com.algafoodapi;
 
+import com.algafoodapi.domain.exception.EntidadeEmUsoException;
+import com.algafoodapi.domain.exception.EntidadeNaoEncontradaException;
 import com.algafoodapi.domain.model.Cozinha;
-import com.algafoodapi.domain.repository.CozinhaRepository;
 import com.algafoodapi.domain.service.CadastroCozinhaService;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +44,26 @@ class CadastroCozinhaIntegrationTest {
         ConstraintViolationException erroEsperado =
                 assertThrows(ConstraintViolationException.class, () -> {
                     cadastroCozinha.salvar(novaCozinha);
+                });
+
+        assertThat(erroEsperado).isNotNull();
+    }
+
+    @Test
+    public void deveFalhar_QuandoExcluirCozinhaEmUso() {
+        EntidadeEmUsoException erroEsperado =
+                assertThrows(EntidadeEmUsoException.class, () -> {
+                    cadastroCozinha.remover(1L);
+                });
+
+        assertThat(erroEsperado).isNotNull();
+    }
+
+    @Test
+    public void deveFalhar_QuandoExcluirCozinhaInexistente() {
+        EntidadeNaoEncontradaException erroEsperado =
+                assertThrows(EntidadeNaoEncontradaException.class, () -> {
+                    cadastroCozinha.remover(0L);
                 });
 
         assertThat(erroEsperado).isNotNull();
