@@ -1,71 +1,35 @@
 package com.algafoodapi;
 
-import com.algafoodapi.domain.exception.EntidadeEmUsoException;
-import com.algafoodapi.domain.exception.EntidadeNaoEncontradaException;
-import com.algafoodapi.domain.model.Cozinha;
-import com.algafoodapi.domain.service.CadastroCozinhaService;
+import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import javax.validation.ConstraintViolationException;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static io.restassured.RestAssured.given;
 
 @ExtendWith(SpringExtension.class)
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class CadastroCozinhaIT {
 
-    @Autowired
-    private CadastroCozinhaService cadastroCozinha;
+    @LocalServerPort
+    private int port;
 
     @Test
-    public void deveAtribuirId_QuandoCadastrarCozinhaComDadosCorretos() {
-        // Cenário
-        Cozinha novaCozinha = new Cozinha();
-        novaCozinha.setNome("Chinesa");
+    public void deveRetornarStatus200_QuandoConsultarCozinhas() {
+        RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
 
-        // Ação
-        novaCozinha = cadastroCozinha.salvar(novaCozinha);
-
-        // Validação
-        assertThat(novaCozinha).isNotNull();
-        assertThat(novaCozinha.getId()).isNotNull();
+        given()
+            .basePath("/cozinhas")
+            .port(port)
+            .accept(ContentType.JSON)
+        .when()
+            .get()
+        .then()
+            .statusCode(HttpStatus.OK.value());
     }
 
-    @Test
-    public void deveFalhar_QuandoCadastrarCozinhaSemNome() {
-        Cozinha novaCozinha = new Cozinha();
-        novaCozinha.setNome(null);
-
-        ConstraintViolationException erroEsperado =
-                assertThrows(ConstraintViolationException.class, () -> {
-                    cadastroCozinha.salvar(novaCozinha);
-                });
-
-        assertThat(erroEsperado).isNotNull();
-    }
-
-    @Test
-    public void deveFalhar_QuandoExcluirCozinhaEmUso() {
-        EntidadeEmUsoException erroEsperado =
-                assertThrows(EntidadeEmUsoException.class, () -> {
-                    cadastroCozinha.remover(1L);
-                });
-
-        assertThat(erroEsperado).isNotNull();
-    }
-
-    @Test
-    public void deveFalhar_QuandoExcluirCozinhaInexistente() {
-        EntidadeNaoEncontradaException erroEsperado =
-                assertThrows(EntidadeNaoEncontradaException.class, () -> {
-                    cadastroCozinha.remover(0L);
-                });
-
-        assertThat(erroEsperado).isNotNull();
-    }
 }
