@@ -7,7 +7,6 @@ import com.algafoodapi.util.ResourceUtils;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import lombok.extern.slf4j.Slf4j;
-import org.flywaydb.core.Flyway;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -52,7 +51,7 @@ class CadastroCozinhaIT {
         databaseCleaner.clearTables();
         prepararDados();
         jsonCorretoCozinhaChinesa = ResourceUtils.getContentFromResource(
-                "/cozinha-chinesa.json");
+                "/json/cozinha-chinesa.json");
     }
 
     @Test
