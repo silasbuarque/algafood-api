@@ -11,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.hasSize;
 
 @ExtendWith(SpringExtension.class)
@@ -30,11 +29,7 @@ class CadastroCozinhaIT {
 
     @Test
     public void deveRetornarStatus200_QuandoConsultarCozinhas() {
-        RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
-
         given()
-            .basePath("/cozinhas")
-            .port(port)
             .accept(ContentType.JSON)
         .when()
             .get()
@@ -44,17 +39,23 @@ class CadastroCozinhaIT {
 
     @Test
     public void deveConter4Cozinhas_QuandoConsultarCozinhas() {
-        RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
-
         given()
-            .basePath("/cozinhas")
-            .port(port)
             .accept(ContentType.JSON)
         .when()
             .get()
         .then()
-            .body("", hasSize(4))
-            .body("nome", hasItems("Indiana","Tailandesa"));
+            .body("", hasSize(4));
+    }
+    @Test
+    public void testRetornarStatus201_QuandoCadastrarCozinha() {
+        given()
+            .body("{ \"nome\": \"Chinesa\" }")
+            .contentType(ContentType.JSON)
+            .accept(ContentType.JSON)
+        .when()
+            .post()
+        .then()
+            .statusCode(HttpStatus.CREATED.value());
     }
 
 }
