@@ -2,6 +2,7 @@ package com.algafoodapi;
 
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,6 +20,13 @@ class CadastroCozinhaIT {
 
     @LocalServerPort
     private int port;
+
+    @BeforeEach
+    public void setUp() {
+        RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
+        RestAssured.port = port;
+        RestAssured.basePath = "/cozinhas";
+    }
 
     @Test
     public void deveRetornarStatus200_QuandoConsultarCozinhas() {
