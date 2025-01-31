@@ -1,5 +1,8 @@
 package com.algafoodapi;
 
+import com.algafoodapi.domain.model.Cozinha;
+import com.algafoodapi.domain.repository.CozinhaRepository;
+import com.algafoodapi.util.DatabaseCleaner;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.flywaydb.core.Flyway;
@@ -25,7 +28,10 @@ class CadastroCozinhaIT {
     private int port;
 
     @Autowired
-    private Flyway flyway;
+    private CozinhaRepository cozinhaRepository;
+
+    @Autowired
+    private DatabaseCleaner databaseCleaner;
 
     @BeforeEach
     public void setUp() {
@@ -33,7 +39,8 @@ class CadastroCozinhaIT {
         RestAssured.port = port;
         RestAssured.basePath = "/cozinhas";
 
-        flyway.migrate();
+        databaseCleaner.clearTables();
+        prepararDados();
     }
 
     @Test
@@ -47,16 +54,16 @@ class CadastroCozinhaIT {
     }
 
     @Test
-    public void deveConter4Cozinhas_QuandoConsultarCozinhas() {
+    public void deveConter2Cozinhas_QuandoConsultarCozinhas() {
         given()
             .accept(ContentType.JSON)
         .when()
             .get()
         .then()
-            .body("", hasSize(4));
+            .body("", hasSize(2));
     }
     @Test
-    public void testRetornarStatus201_QuandoCadastrarCozinha() {
+    public void deveRetornarStatus201_QuandoCadastrarCozinha() {
         given()
             .body("{ \"nome\": \"Chinesa\" }")
             .contentType(ContentType.JSON)
@@ -65,6 +72,16 @@ class CadastroCozinhaIT {
             .post()
         .then()
             .statusCode(HttpStatus.CREATED.value());
+    }
+
+    private void prepararDados() {
+        Cozinha cozinha1 = new Cozinha();
+        cozinha1.setNome("Tailandesa");
+        cozinhaRepository.save(cozinha1);
+
+        Cozinha cozinha2 = new Cozinha();
+        cozinha2.setNome("Americana");
+        cozinhaRepository.save(cozinha2);
     }
 
 }
