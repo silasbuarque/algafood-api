@@ -5,6 +5,7 @@ import com.algafoodapi.domain.repository.CozinhaRepository;
 import com.algafoodapi.util.DatabaseCleaner;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
+import lombok.extern.slf4j.Slf4j;
 import org.flywaydb.core.Flyway;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,8 +18,10 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 
+@Slf4j
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource("/application-teste.properties")
@@ -72,6 +75,31 @@ class CadastroCozinhaIT {
             .post()
         .then()
             .statusCode(HttpStatus.CREATED.value());
+    }
+
+    @Test
+    public void deveRetornarRespostaEStatusCorretos_QuandoConsultaCozinhaExistente() {
+        given()
+            .pathParams("cozinhaId", 2)
+            .accept(ContentType.JSON)
+        .when()
+            .get("/{cozinhaId}")
+        .then()
+            .statusCode(HttpStatus.OK.value())
+            .body("nome", equalTo("Americana"));
+
+    }
+
+    @Test
+    public void deveRetornarStatus404_QuandoConsultaCozinhaInexistente() {
+        given()
+            .pathParams("cozinhaId", 100)
+            .accept(ContentType.JSON)
+        .when()
+            .get("/{cozinhaId}")
+        .then()
+            .statusCode(HttpStatus.NOT_FOUND.value());
+
     }
 
     private void prepararDados() {
