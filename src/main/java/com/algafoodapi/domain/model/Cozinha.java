@@ -31,7 +31,6 @@ public class Cozinha {
     /**
      * mappedBy = Nome do atributo Cozinha que está mapeado na classe Restaurante
      */
-    @JsonIgnore
     @OneToMany(mappedBy = "cozinha")
     private List<Restaurante> restaurantes;
 
