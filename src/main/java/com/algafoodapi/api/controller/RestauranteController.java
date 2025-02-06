@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import com.algafoodapi.api.model.RestauranteDTO;
 import com.algafoodapi.core.validation.ValidacaoException;
 import com.algafoodapi.domain.exception.CozinhaNaoEncontradaException;
 import com.algafoodapi.domain.exception.NegocioException;
@@ -46,8 +47,13 @@ public class RestauranteController {
     }
 
     @GetMapping("/{restauranteId}")
-    public Restaurante buscar(@PathVariable Long restauranteId) {
-        return cadastroRestaurante.buscarOuFalhar(restauranteId);
+    public RestauranteDTO buscar(@PathVariable Long restauranteId) {
+        Restaurante restaurante = cadastroRestaurante.buscarOuFalhar(restauranteId);
+
+        RestauranteDTO restauranteDTO = new RestauranteDTO();
+
+        return restauranteDTO;
+
     }
 
     @PostMapping
