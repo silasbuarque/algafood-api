@@ -1,25 +1,21 @@
 package com.algafoodapi.api.controller;
 
-import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
 import com.algafoodapi.api.assembler.RestauranteDTOAssembler;
-import com.algafoodapi.api.model.CozinhaDTO;
+import com.algafoodapi.api.assembler.RestauranteInputDisassembler;
 import com.algafoodapi.api.model.RestauranteDTO;
 import com.algafoodapi.api.model.input.RestauranteInput;
 import com.algafoodapi.domain.exception.CozinhaNaoEncontradaException;
 import com.algafoodapi.domain.exception.NegocioException;
-import com.algafoodapi.domain.model.Cozinha;
 import com.algafoodapi.domain.model.Restaurante;
 import com.algafoodapi.domain.repository.RestauranteRepository;
 import com.algafoodapi.domain.service.CadastroRestauranteService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.validation.SmartValidator;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -34,6 +30,9 @@ public class RestauranteController {
 
     @Autowired
     private RestauranteDTOAssembler restauranteDTOAssembler;
+
+    @Autowired
+    private RestauranteInputDisassembler restauranteInputDisassembler;
 
     @GetMapping
     public List<RestauranteDTO> listar() {
@@ -52,7 +51,7 @@ public class RestauranteController {
     @ResponseStatus(HttpStatus.CREATED)
     public RestauranteDTO adicionar(@RequestBody @Valid RestauranteInput restauranteInput) {
         try {
-            Restaurante restaurante = toDomainObject(restauranteInput);
+            Restaurante restaurante = restauranteInputDisassembler.toDomainObject(restauranteInput);
             return restauranteDTOAssembler.toModel(cadastroRestaurante.salvar(restaurante));
         } catch (CozinhaNaoEncontradaException e) {
             throw new NegocioException(e.getMessage());
@@ -62,7 +61,7 @@ public class RestauranteController {
     @PutMapping("/{restauranteId}")
     public RestauranteDTO atualizar(@PathVariable Long restauranteId, @RequestBody @Valid RestauranteInput restauranteInput) {
         try {
-            Restaurante restaurante = toDomainObject(restauranteInput);
+            Restaurante restaurante = restauranteInputDisassembler.toDomainObject(restauranteInput);
 
             Restaurante restauranteAtual = cadastroRestaurante.buscarOuFalhar(restauranteId);
 
@@ -73,19 +72,6 @@ public class RestauranteController {
         } catch (CozinhaNaoEncontradaException e) {
             throw new NegocioException(e.getMessage());
         }
-    }
-
-    private Restaurante toDomainObject(RestauranteInput restauranteInput) {
-        Restaurante restaurante = new Restaurante();
-        restaurante.setNome(restauranteInput.getNome());
-        restaurante.setTaxaFrete(restauranteInput.getTaxaFrete());
-
-        Cozinha cozinha = new Cozinha();
-        cozinha.setId(restauranteInput.getCozinha().getId());
-
-        restaurante.setCozinha(cozinha);
-
-        return restaurante;
     }
 
 }
