@@ -1,6 +1,5 @@
 package com.algafoodapi.domain.model;
 
-import com.algafoodapi.core.validation.Groups;
 import com.algafoodapi.core.validation.ValorZeroIncluiDescricao;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -8,12 +7,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import javax.validation.Valid;
-import javax.validation.constraints.*;
-import javax.validation.groups.ConvertGroup;
-import javax.validation.groups.Default;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,16 +23,10 @@ public class Restaurante {
     @Id
     private Long id;
 
-//    @NotNull -> Não aceita null, mas aceita string vazia
-//    @NotEmpty -> Não aceita null e nem String vazia, mas aceita String com espaço
-    @NotBlank // -> Não aceita null, String vazia e nem String com espaço
     @Column(nullable = false)
     private String nome;
 
-//    @DecimalMin("0") -> Só aceita valor igual ou maior que o especificado
-//    @Multiplo(numero = 5)
-    @NotNull
-    @PositiveOrZero // -> Aceita numeros positivos ou zero;
+
     @Column(name = "taxa_frete", nullable = false)
     private BigDecimal taxaFrete;
 
@@ -50,9 +38,6 @@ public class Restaurante {
      * utilizar ou não a propriedade Cozinha, por ser
      * "ToOne", ele já vai carregar pra gente.
      */
-    @Valid
-    @ConvertGroup(from = Default.class, to = Groups.CozinhaId.class)
-    @NotNull
     @ManyToOne
     @JoinColumn(name = "cozinha_id", nullable = false) // Caso eu queria trocar o nome da coluna id
     private Cozinha cozinha;
