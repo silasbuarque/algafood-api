@@ -1,5 +1,7 @@
 package com.algafoodapi.core.modelmapper;
 
+import com.algafoodapi.api.model.RestauranteDTO;
+import com.algafoodapi.domain.model.Restaurante;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,7 +11,12 @@ public class ModelMapperConfig {
 
     @Bean
     public ModelMapper modelMapper() {
-        return new ModelMapper();
+        var modelMapper = new ModelMapper();
+
+        modelMapper.createTypeMap(Restaurante.class, RestauranteDTO.class)
+                .addMapping(Restaurante::getTaxaFrete, RestauranteDTO::setPrecoFrete);
+
+        return modelMapper;
     }
 
 }
