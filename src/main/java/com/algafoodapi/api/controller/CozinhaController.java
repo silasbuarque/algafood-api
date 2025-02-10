@@ -2,6 +2,10 @@ package com.algafoodapi.api.controller;
 
 import java.util.List;
 
+import com.algafoodapi.api.assembler.CozinhaDTOAssembler;
+import com.algafoodapi.api.assembler.CozinhaInputDisassembler;
+import com.algafoodapi.api.model.CozinhaDTO;
+import com.algafoodapi.api.model.input.CozinhaInput;
 import com.algafoodapi.domain.exception.EntidadeNaoEncontradaException;
 import com.algafoodapi.domain.exception.EstadoNaoEncontradoException;
 import com.algafoodapi.domain.exception.NegocioException;
@@ -35,37 +39,43 @@ public class CozinhaController {
     @Autowired
     private CadastroCozinhaService cadastroCozinha;
 
+    @Autowired
+    private CozinhaDTOAssembler cozinhaDTOAssembler;
+
+    @Autowired
+    private CozinhaInputDisassembler cozinhaInputDisassembler;
+
+
     @GetMapping
-    public List<Cozinha> listar() {
-        return cozinhaRepository.findAll();
+    public List<CozinhaDTO> listar() {
+        return cozinhaDTOAssembler.toCollectionsDTO(cozinhaRepository.findAll());
     }
 
     @GetMapping("/{cozinhaId}")
-    public Cozinha buscar(@PathVariable Long cozinhaId) {
-        return cadastroCozinha.buscarOuFalhar(cozinhaId);
+    public CozinhaDTO buscar(@PathVariable Long cozinhaId) {
+        return cozinhaDTOAssembler.toDTO(cadastroCozinha.buscarOuFalhar(cozinhaId));
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Cozinha adicionar(@RequestBody @Valid Cozinha cozinha) {
+    public CozinhaDTO adicionar(@RequestBody @Valid CozinhaInput cozinhaInput) {
         try {
-            return cadastroCozinha.salvar(cozinha);
+            Cozinha cozinha = cozinhaInputDisassembler.toDomainObject(cozinhaInput);
+            return cozinhaDTOAssembler.toDTO(cadastroCozinha.salvar(cozinha));
         } catch (EntidadeNaoEncontradaException e) {
             throw new NegocioException(e.getMessage(), e);
         }
     }
 
     @PutMapping("/{cozinhaId}")
-    public Cozinha atualizar(@PathVariable Long cozinhaId, @RequestBody @Valid Cozinha cozinha) {
-
+    public CozinhaDTO atualizar(@PathVariable Long cozinhaId, @RequestBody @Valid CozinhaInput cozinhaInput) {
         try {
             Cozinha cozinhaAtual = cadastroCozinha.buscarOuFalhar(cozinhaId);
-            BeanUtils.copyProperties(cozinha, cozinhaAtual, "id");
-            return cadastroCozinha.salvar(cozinhaAtual);
+            cozinhaInputDisassembler.copyToDomainObject(cozinhaInput, cozinhaAtual);
+            return cozinhaDTOAssembler.toDTO(cadastroCozinha.salvar(cozinhaAtual));
         } catch (EstadoNaoEncontradoException e) {
             throw new NegocioException(e.getMessage(), e);
         }
-
     }
 
     @DeleteMapping("/{cozinhaId}")
