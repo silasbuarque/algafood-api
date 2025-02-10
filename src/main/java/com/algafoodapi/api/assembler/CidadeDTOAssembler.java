@@ -1,6 +1,8 @@
 package com.algafoodapi.api.assembler;
 
+import com.algafoodapi.api.model.CidadeDTO;
 import com.algafoodapi.api.model.RestauranteDTO;
+import com.algafoodapi.domain.model.Cidade;
 import com.algafoodapi.domain.model.Restaurante;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,18 +12,18 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-public class RestauranteDTOAssembler {
+public class CidadeDTOAssembler {
 
     @Autowired
     private ModelMapper modelMapper;
 
-    public RestauranteDTO toModel(Restaurante restaurante) {
-        return modelMapper.map(restaurante, RestauranteDTO.class);
+    public CidadeDTO toModel(Cidade cidade) {
+        return modelMapper.map(cidade, CidadeDTO.class);
     }
 
-    public List<RestauranteDTO> toCollectionsModel(List<Restaurante> restaurantes) {
-        return restaurantes.stream()
-                .map(restaurante -> toModel(restaurante))
+    public List<CidadeDTO> toCollectionsModel(List<Cidade> cidades) {
+        return cidades.stream()
+                .map(cidade -> toModel(cidade))
                 .collect(Collectors.toList());
     }
 
