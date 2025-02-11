@@ -26,6 +26,7 @@ public class ModelMapperConfig {
                     dto.setNome(source.getNome());
                     dto.setPrecoFreteBaguiDoido(source.getTaxaFrete());
                     dto.setCozinha(cozinhaDTO);
+                    dto.setAtivo(source.getAtivo());
                     return dto;
                 });
 

@@ -55,6 +55,8 @@ public class Restaurante {
     @Embedded
     private Endereco endereco;
 
+    private Boolean ativo = Boolean.TRUE;
+
     /**
      *  name = tabela que irá pegar FK de restaurante e forma de pagamento para
      *  fazer o relacionamento entre as duas entidades;
@@ -79,4 +81,11 @@ public class Restaurante {
     @OneToMany(mappedBy = "restaurante")
     private List<Produto> produtos = new ArrayList<>();
 
+    public void ativar() {
+        setAtivo(true);
+    }
+
+    public void inativar() {
+        setAtivo(false);
+    }
 }
