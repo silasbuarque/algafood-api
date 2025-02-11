@@ -42,9 +42,7 @@ public class RestauranteController {
     @GetMapping("/{restauranteId}")
     public RestauranteDTO buscar(@PathVariable Long restauranteId) {
         Restaurante restaurante = cadastroRestaurante.buscarOuFalhar(restauranteId);
-
         return restauranteDTOAssembler.toModel(restaurante);
-
     }
 
     @PostMapping
@@ -70,11 +68,13 @@ public class RestauranteController {
     }
 
     @PutMapping("/{restauranteId}/ativacao")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void ativar(@PathVariable Long restauranteId) {
         cadastroRestaurante.ativar(restauranteId);
     }
 
     @DeleteMapping("/{restauranteId}/ativacao")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void inativar(@PathVariable Long restauranteId) {
         cadastroRestaurante.inativar(restauranteId);
     }
