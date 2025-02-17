@@ -1,10 +1,7 @@
 package com.algafoodapi.domain.service;
 
-import com.algafoodapi.api.model.UsuarioDTO;
-import com.algafoodapi.api.model.input.UsuarioAlteraSenhaInput;
-import com.algafoodapi.api.model.input.UsuarioAtualizarInput;
 import com.algafoodapi.domain.exception.EntidadeEmUsoException;
-import com.algafoodapi.domain.exception.GrupoNaoEncontradoException;
+import com.algafoodapi.domain.exception.NegocioException;
 import com.algafoodapi.domain.exception.SenhaInvalidaException;
 import com.algafoodapi.domain.exception.UsuarioNaoEncontradoException;
 import com.algafoodapi.domain.model.Usuario;
@@ -15,9 +12,9 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.validation.Valid;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class CadastroUsuarioService {
@@ -39,6 +36,16 @@ public class CadastroUsuarioService {
 
     @Transactional
     public Usuario adicionar(Usuario usuario) {
+
+        usuarioRepository.detach(usuario);
+
+        Optional<Usuario> usuarioExistente = usuarioRepository.findByEmail(usuario.getEmail());
+
+        if (usuarioExistente.isPresent() && !usuarioExistente.get().equals(usuario)) {
+            throw new NegocioException(
+                    String.format("Já existe um usuário cadastrado com o email %s.", usuario.getEmail()));
+        }
+
         return usuarioRepository.save(usuario);
     }
 
