@@ -98,4 +98,12 @@ public class Restaurante {
     public void removerFormaPagamento(FormaPagamento formaPagamento) {
         getFormasPagamento().remove(formaPagamento);
     }
+
+    public void adicionarProduto(Produto produto) {
+        getProdutos().add(produto);
+    }
+
+    public void removerProduto(Produto produto) {
+        getProdutos().remove(produto);
+    }
 }
