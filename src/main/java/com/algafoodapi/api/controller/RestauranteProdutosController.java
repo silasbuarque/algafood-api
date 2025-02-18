@@ -36,7 +36,6 @@ public class RestauranteProdutosController {
         return produtosDTOAssembler.toListDTO(restaurante.getProdutos());
     }
 
-    //Buscar por id
     @GetMapping("/{produtoId}")
     public ProdutosDTO buscar(@PathVariable Long restauranteId, @PathVariable Long produtoId) {
         Produto produto = produtosService.buscarOuFalhar(restauranteId, produtoId);
