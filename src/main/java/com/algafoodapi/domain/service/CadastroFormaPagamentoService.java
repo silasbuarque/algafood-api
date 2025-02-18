@@ -4,6 +4,7 @@ import com.algafoodapi.domain.exception.EntidadeEmUsoException;
 import com.algafoodapi.domain.exception.EstadoNaoEncontradoException;
 import com.algafoodapi.domain.exception.FormaPagamentoNaoEncontradoException;
 import com.algafoodapi.domain.model.FormaPagamento;
+import com.algafoodapi.domain.model.Restaurante;
 import com.algafoodapi.domain.repository.FormaPagamentoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -20,6 +21,9 @@ public class CadastroFormaPagamentoService {
 
     @Autowired
     private FormaPagamentoRepository formaPagamentoRepository;
+
+    @Autowired
+    private CadastroRestauranteService restauranteService;
 
     public List<FormaPagamento> listar() {
         return formaPagamentoRepository.findAll();
@@ -47,5 +51,19 @@ public class CadastroFormaPagamentoService {
         } catch (DataIntegrityViolationException e) {
             throw new FormaPagamentoNaoEncontradoException(String.format(MSG_FORMA_PAGAMENTO_EM_USO, id));
         }
+    }
+
+    @Transactional
+    public void desassociarFormaPagamento(Long restauranteId, Long formaPagamentoId) {
+        Restaurante restaurante = restauranteService.buscarOuFalhar(restauranteId);
+        FormaPagamento formaPagamento = buscarOuFalhar(formaPagamentoId);
+        restaurante.removerFormaPagamento(formaPagamento);
+    }
+
+    @Transactional
+    public void associarFormaPagamento(Long restauranteId, Long formaPagamentoId) {
+        Restaurante restaurante = restauranteService.buscarOuFalhar(restauranteId);
+        FormaPagamento formaPagamento = buscarOuFalhar(formaPagamentoId);
+        restaurante.adicionarFormaPagamento(formaPagamento);
     }
 }

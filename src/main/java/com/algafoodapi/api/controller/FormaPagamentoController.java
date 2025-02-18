@@ -33,7 +33,7 @@ public class FormaPagamentoController {
         return formaPagamentoDTOAssembler.toCollectionsModel(formaPagamentoService.listar());
     }
 
-    @GetMapping("{formaPagamentoId}")
+    @GetMapping("/{formaPagamentoId}")
     public FormaPagamentoDTO buscarPorId(@PathVariable Long formaPagamentoId) {
         FormaPagamento formaPagamento = formaPagamentoService.buscarOuFalhar(formaPagamentoId);
 
