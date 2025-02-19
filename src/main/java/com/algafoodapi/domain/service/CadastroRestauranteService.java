@@ -4,6 +4,7 @@ import com.algafoodapi.domain.exception.RestauranteNaoEncontradoException;
 import com.algafoodapi.domain.model.Cidade;
 import com.algafoodapi.domain.model.Cozinha;
 import com.algafoodapi.domain.model.Restaurante;
+import com.algafoodapi.domain.model.Usuario;
 import com.algafoodapi.domain.repository.RestauranteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,9 @@ public class CadastroRestauranteService {
 
     @Autowired
     private CadastroCidadeService cidadeService;
+
+    @Autowired
+    private CadastroUsuarioService usuarioService;
 
     @Transactional
     public Restaurante salvar(Restaurante restaurante) {
@@ -70,5 +74,19 @@ public class CadastroRestauranteService {
     public void fechar(Long restauranteId) {
         Restaurante restaurante = buscarOuFalhar(restauranteId);
         restaurante.fechar();
+    }
+
+    @Transactional
+    public void associarUsuario(Long restauranteId, Long usuarioId) {
+        Restaurante restaurante = buscarOuFalhar(restauranteId);
+        Usuario usuario = usuarioService.buscarOuFalhar(usuarioId);
+        restaurante.getResponsaveis().add(usuario);
+    }
+
+    @Transactional
+    public void desaassociarUsuario(Long restauranteId, Long usuarioId) {
+        Restaurante restaurante = buscarOuFalhar(restauranteId);
+        Usuario usuario = usuarioService.buscarOuFalhar(usuarioId);
+        restaurante.getResponsaveis().remove(usuario);
     }
 }
