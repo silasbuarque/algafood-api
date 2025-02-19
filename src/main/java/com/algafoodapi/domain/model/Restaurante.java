@@ -59,6 +59,8 @@ public class Restaurante {
 
     private Boolean ativo = Boolean.TRUE;
 
+    private Boolean aberto = Boolean.TRUE;
+
     /**
      *  name = tabela que irá pegar FK de restaurante e forma de pagamento para
      *  fazer o relacionamento entre as duas entidades;
@@ -106,4 +108,13 @@ public class Restaurante {
     public void removerProduto(Produto produto) {
         getProdutos().remove(produto);
     }
+
+    public void abrir() {
+        setAberto(true);
+    }
+
+    public void fechar() {
+        setAberto(false);
+    }
+
 }

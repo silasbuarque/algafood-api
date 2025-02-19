@@ -59,4 +59,16 @@ public class CadastroRestauranteService {
         // dado que anotamos com @Transactional, ele já motifica no
         // banco de forma sincrona.
     }
+
+    @Transactional
+    public void abrir(Long restauranteId) {
+        Restaurante restaurante = buscarOuFalhar(restauranteId);
+        restaurante.abrir();
+    }
+
+    @Transactional
+    public void fechar(Long restauranteId) {
+        Restaurante restaurante = buscarOuFalhar(restauranteId);
+        restaurante.fechar();
+    }
 }
