@@ -4,6 +4,7 @@ import com.algafoodapi.domain.exception.EntidadeEmUsoException;
 import com.algafoodapi.domain.exception.NegocioException;
 import com.algafoodapi.domain.exception.SenhaInvalidaException;
 import com.algafoodapi.domain.exception.UsuarioNaoEncontradoException;
+import com.algafoodapi.domain.model.Grupo;
 import com.algafoodapi.domain.model.Usuario;
 import com.algafoodapi.domain.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,9 @@ public class CadastroUsuarioService {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private CadastroGrupoService cadastroGrupoService;
 
     public List<Usuario> listar() {
         return usuarioRepository.findAll();
@@ -72,5 +76,19 @@ public class CadastroUsuarioService {
         }
 
         usuario.setSenha(novaSenha);
+    }
+
+    @Transactional
+    public void associarGrupo(Long usuarioId, Long grupoId) {
+        Usuario usuario = buscarOuFalhar(usuarioId);
+        Grupo grupo = cadastroGrupoService.buscarOuFalhar(grupoId);
+        usuario.getGrupos().add(grupo);
+    }
+
+    @Transactional
+    public void desassociarGrupo(Long usuarioId, Long grupoId) {
+        Usuario usuario = buscarOuFalhar(usuarioId);
+        Grupo grupo = cadastroGrupoService.buscarOuFalhar(grupoId);
+        usuario.getGrupos().remove(grupo);
     }
 }
