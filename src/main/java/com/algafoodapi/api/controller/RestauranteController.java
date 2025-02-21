@@ -10,10 +10,10 @@ import com.algafoodapi.api.model.RestauranteDTO;
 import com.algafoodapi.api.model.input.RestauranteInput;
 import com.algafoodapi.domain.exception.CozinhaNaoEncontradaException;
 import com.algafoodapi.domain.exception.NegocioException;
+import com.algafoodapi.domain.exception.RestauranteNaoEncontradoException;
 import com.algafoodapi.domain.model.Restaurante;
 import com.algafoodapi.domain.repository.RestauranteRepository;
 import com.algafoodapi.domain.service.CadastroRestauranteService;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -69,14 +69,34 @@ public class RestauranteController {
 
     @PutMapping("/{restauranteId}/ativacao")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void ativar(@PathVariable Long restauranteId) {
+    public void ativarMultiplos(@PathVariable Long restauranteId) {
         cadastroRestaurante.ativar(restauranteId);
     }
 
     @DeleteMapping("/{restauranteId}/ativacao")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void inativar(@PathVariable Long restauranteId) {
+    public void inativarMultiplos(@PathVariable Long restauranteId) {
         cadastroRestaurante.inativar(restauranteId);
+    }
+
+    @PutMapping("/ativacao")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void ativarMultiplos(@RequestBody List<Long> restaurantesIds) {
+        try {
+            cadastroRestaurante.ativar(restaurantesIds);
+        } catch (RestauranteNaoEncontradoException e) {
+            throw new NegocioException(e.getMessage(), e);
+        }
+    }
+
+    @DeleteMapping("/ativacao")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void inativarMultiplos(@RequestBody List<Long> restaurantesIds) {
+        try {
+            cadastroRestaurante.inativar(restaurantesIds);
+        } catch (RestauranteNaoEncontradoException e) {
+            throw new NegocioException(e.getMessage(), e);
+        }
     }
 
     @PutMapping("/{restauranteId}/abertura")
