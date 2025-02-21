@@ -18,8 +18,8 @@ public class ItemPedido {
 
     private Integer quantidade;
     private BigDecimal precoUnitario;
-    private Integer precoTotal;
-    private String descricao;
+    private BigDecimal precoTotal;
+    private String observacao;
 
     @ManyToOne
     @JoinColumn(name = "pedido_id", nullable = false)
