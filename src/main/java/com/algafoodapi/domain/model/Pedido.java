@@ -32,14 +32,14 @@ public class Pedido {
     private OffsetDateTime dataCancelamento;
     private OffsetDateTime dataEntrega;
 
-    @OneToMany(mappedBy = "pedido")
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
     private List<ItemPedido> itens  = new ArrayList<>();;
 
     @Embedded
     private Endereco enderecoEntrega;
 
     @Enumerated(EnumType.STRING)
-    private StatusPedido status;
+    private StatusPedido status = StatusPedido.CRIADO;
 
     @ManyToOne
     @JoinColumn(name = "usuario_cliente_id", nullable = false)
@@ -54,8 +54,10 @@ public class Pedido {
     private FormaPagamento formaPagamento;
 
     public void calcularValorTotal() {
+        getItens().forEach(ItemPedido::calcularPrecoTotal);
+
         this.subtotal = getItens().stream()
-                .map(ItemPedido::getPrecoTotal)
+                .map(item -> item.getPrecoTotal())
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
         this.valorTotal = this.subtotal.add(this.taxaFrete);

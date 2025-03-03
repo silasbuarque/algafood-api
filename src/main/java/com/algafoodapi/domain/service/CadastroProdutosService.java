@@ -2,7 +2,6 @@ package com.algafoodapi.domain.service;
 
 import com.algafoodapi.domain.exception.ProdutoNaoEncontradoException;
 import com.algafoodapi.domain.model.Produto;
-import com.algafoodapi.domain.model.Restaurante;
 import com.algafoodapi.domain.repository.ProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
