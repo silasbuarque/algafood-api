@@ -9,7 +9,7 @@ import com.algafoodapi.api.model.input.PedidoInput;
 import com.algafoodapi.domain.exception.NegocioException;
 import com.algafoodapi.domain.model.Pedido;
 import com.algafoodapi.domain.model.Usuario;
-import com.algafoodapi.domain.service.CadastroPedidoService;
+import com.algafoodapi.domain.service.EmissaoPedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +22,7 @@ import java.util.List;
 public class PedidoController {
 
     @Autowired
-    private CadastroPedidoService pedidoService;
+    private EmissaoPedidoService pedidoService;
 
     @Autowired
     private PedidoDTOAssembler pedidoAssembler;
