@@ -1,8 +1,9 @@
 package com.algafoodapi.core.modelmapper;
 
-import com.algafoodapi.api.model.CozinhaDTO;
-import com.algafoodapi.api.model.RestauranteDTO;
-import com.algafoodapi.domain.model.Restaurante;
+import com.algafoodapi.api.model.EnderecoDTO;
+import com.algafoodapi.api.model.input.ItemPedidoInput;
+import com.algafoodapi.domain.model.Endereco;
+import com.algafoodapi.domain.model.ItemPedido;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,21 +15,17 @@ public class ModelMapperConfig {
     public ModelMapper modelMapper() {
         var modelMapper = new ModelMapper();
 
-        modelMapper.createTypeMap(Restaurante.class, RestauranteDTO.class)
-                .setConverter(context -> {
-                    CozinhaDTO cozinhaDTO = new CozinhaDTO();
-                    cozinhaDTO.setId(context.getSource().getId());
-                    cozinhaDTO.setNome(context.getSource().getNome());
+//        modelMapper.createTypeMap(Restaurante.class, RestauranteDTO.class)
+//                .addMapping(Restaurante::getTaxaFrete, RestauranteDTO::getTaxaFrete);
 
-                    Restaurante source = context.getSource();
-                    RestauranteDTO dto = new RestauranteDTO();
-                    dto.setId(source.getId());
-                    dto.setNome(source.getNome());
-                    dto.setPrecoFreteBaguiDoido(source.getTaxaFrete());
-                    dto.setCozinha(cozinhaDTO);
-                    return dto;
-                });
+        modelMapper.createTypeMap(ItemPedidoInput.class, ItemPedido.class)
+                .addMappings(mapper -> mapper.skip(ItemPedido::setId));
 
+        var enderecoToEnderecoModelTypeMap = modelMapper.createTypeMap(Endereco.class, EnderecoDTO.class);
+
+        enderecoToEnderecoModelTypeMap.<String>addMapping(
+                enderecoSrc -> enderecoSrc.getCidade().getEstado().getNome(),
+                (enderecoModelDest, value) -> enderecoModelDest.getCidade().setEstado(value));
 
         return modelMapper;
     }

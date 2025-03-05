@@ -9,7 +9,9 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -55,6 +57,10 @@ public class Restaurante {
     @Embedded
     private Endereco endereco;
 
+    private Boolean ativo = Boolean.TRUE;
+
+    private Boolean aberto = Boolean.TRUE;
+
     /**
      *  name = tabela que irá pegar FK de restaurante e forma de pagamento para
      *  fazer o relacionamento entre as duas entidades;
@@ -68,7 +74,7 @@ public class Restaurante {
     @JoinTable(name = "restaurante_forma_pagamento",
                 joinColumns = @JoinColumn(name = "restaurante_id"),
                 inverseJoinColumns = @JoinColumn(name = "forma_pagamento_id"))
-    private List<FormaPagamento> formasPagamento = new ArrayList<>();
+    private Set<FormaPagamento> formasPagamento = new HashSet<>();
 
     /**
      * Já a estratégia do "ToMany" padrão é o Lazy Loading.
@@ -78,5 +84,51 @@ public class Restaurante {
      */
     @OneToMany(mappedBy = "restaurante")
     private List<Produto> produtos = new ArrayList<>();
+
+    @ManyToMany
+    @JoinTable(name = "restaurante_usuario_responsavel",
+            joinColumns = @JoinColumn(name = "restaurante_id"),
+            inverseJoinColumns = @JoinColumn(name = "usuario_id"))
+    private Set<Usuario> responsaveis = new HashSet<>();
+
+    public void ativar() {
+        setAtivo(true);
+    }
+
+    public void inativar() {
+        setAtivo(false);
+    }
+
+    public void adicionarFormaPagamento(FormaPagamento formaPagamento) {
+        getFormasPagamento().add(formaPagamento);
+    }
+
+    public void removerFormaPagamento(FormaPagamento formaPagamento) {
+        getFormasPagamento().remove(formaPagamento);
+    }
+
+    public void abrir() {
+        setAberto(true);
+    }
+
+    public void fechar() {
+        setAberto(false);
+    }
+
+    public Boolean adicionarResponsavel(Usuario usuario) {
+        return getResponsaveis().add(usuario);
+    }
+
+    public Boolean removerResponsavel(Usuario usuario) {
+        return getResponsaveis().remove(usuario);
+    }
+
+    public boolean aceitaFormaPagamento(FormaPagamento formaPagamento) {
+        return getFormasPagamento().contains(formaPagamento);
+    }
+
+    public boolean naoAceitaFormaPagamento(FormaPagamento formaPagamento) {
+        return !aceitaFormaPagamento(formaPagamento);
+    }
 
 }
