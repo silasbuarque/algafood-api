@@ -1,5 +1,6 @@
 package com.algafoodapi.domain.model;
 
+import com.algafoodapi.domain.exception.NegocioException;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.CreationTimestamp;
@@ -63,12 +64,29 @@ public class Pedido {
         this.valorTotal = this.subtotal.add(this.taxaFrete);
     }
 
-    public void definirFrete() {
-        setTaxaFrete(getRestaurante().getTaxaFrete());
+    public void confirmar() {
+        setStatus(StatusPedido.CONFIRMADO);
+        setDataConfirmacao(OffsetDateTime.now());
     }
 
-    public void atribuirPedidoAosItens() {
-        getItens().forEach(item -> item.setPedido(this));
+    public void cancelar() {
+        setStatus(StatusPedido.CANCELADO);
+        setDataCancelamento(OffsetDateTime.now());
+    }
+
+    public void entregar() {
+        setStatus(StatusPedido.ENTREGUE);
+        setDataEntrega(OffsetDateTime.now());
+    }
+
+    private void setStatus(StatusPedido status) {
+        if (getStatus().naoPodeAlterarPara(status)) {
+            throw new NegocioException(
+                    String.format("O status do pedido %d não pode alterar de %s para %s.",
+                            getId(), getStatus().getDescricao(), status.getDescricao()));
+        }
+
+        this.status = status;
     }
 
 }
