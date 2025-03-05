@@ -42,6 +42,12 @@ public class RestauranteController {
         return restauranteDTOAssembler.toCollectionsModel(restauranteRepository.findAll());
     }
 
+//    @JsonView(RestauranteView.Resumo.class)
+//    @GetMapping
+//    public List<RestauranteDTO> listar() {
+//        return restauranteDTOAssembler.toCollectionsModel(restauranteRepository.findAll());
+//    }
+
     @JsonView(RestauranteView.ApenasNome.class)
     @GetMapping(params = "projecao=apenas-nome")
     public List<RestauranteDTO> listarApenasNomes() {
