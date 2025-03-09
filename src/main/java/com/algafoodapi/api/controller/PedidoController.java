@@ -39,32 +39,32 @@ public class PedidoController {
     private PedidoInputDisassembler pedidoInputDisassembler;
 
 
-    @GetMapping
-    public MappingJacksonValue listar(@RequestParam(required = false) String campos) {
-        List<Pedido> pedidos = pedidoService.listar();
-        List<PedidoResumoDTO> pedidosDTO = pedidoResumoAssembler.toListDTO(pedidos);
-
-        MappingJacksonValue wrapperPedidos = new MappingJacksonValue(pedidosDTO);
-
-        SimpleFilterProvider simpleFilterProvider = new SimpleFilterProvider();
-        simpleFilterProvider.addFilter("pedidoFilter", SimpleBeanPropertyFilter.serializeAll());
-
-        if (StringUtils.isNotBlank(campos)) {
-            simpleFilterProvider.addFilter("pedidoFilter",
-                    SimpleBeanPropertyFilter.filterOutAllExcept(campos.split(",")));
-        }
-
-        wrapperPedidos.setFilters(simpleFilterProvider);
-
-        return wrapperPedidos;
-    }
-
 //    @GetMapping
-//    public List<PedidoResumoDTO> listar() {
-//        List<Pedido> listar = pedidoService.listar();
+//    public MappingJacksonValue listar(@RequestParam(required = false) String campos) {
+//        List<Pedido> pedidos = pedidoService.listar();
+//        List<PedidoResumoDTO> pedidosDTO = pedidoResumoAssembler.toListDTO(pedidos);
 //
-//        return pedidoResumoAssembler.toListDTO(listar);
+//        MappingJacksonValue wrapperPedidos = new MappingJacksonValue(pedidosDTO);
+//
+//        SimpleFilterProvider simpleFilterProvider = new SimpleFilterProvider();
+//        simpleFilterProvider.addFilter("pedidoFilter", SimpleBeanPropertyFilter.serializeAll());
+//
+//        if (StringUtils.isNotBlank(campos)) {
+//            simpleFilterProvider.addFilter("pedidoFilter",
+//                    SimpleBeanPropertyFilter.filterOutAllExcept(campos.split(",")));
+//        }
+//
+//        wrapperPedidos.setFilters(simpleFilterProvider);
+//
+//        return wrapperPedidos;
 //    }
+
+    @GetMapping
+    public List<PedidoResumoDTO> listar() {
+        List<Pedido> listar = pedidoService.listar();
+
+        return pedidoResumoAssembler.toListDTO(listar);
+    }
 
     @GetMapping("/{codigoPedido}")
     public PedidoDTO buscar(@PathVariable String codigoPedido) {
