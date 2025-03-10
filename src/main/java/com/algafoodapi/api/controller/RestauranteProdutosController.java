@@ -6,6 +6,7 @@ import com.algafoodapi.api.model.ProdutosDTO;
 import com.algafoodapi.api.model.input.ProdutoInput;
 import com.algafoodapi.domain.model.Produto;
 import com.algafoodapi.domain.model.Restaurante;
+import com.algafoodapi.domain.repository.ProdutoRepository;
 import com.algafoodapi.domain.service.CadastroProdutosService;
 import com.algafoodapi.domain.service.CadastroRestauranteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,10 +31,23 @@ public class RestauranteProdutosController {
     @Autowired
     private ProdutoInputDisassembler produtoInputDisassembler;
 
+    @Autowired
+    private ProdutoRepository produtoRepository;
+
     @GetMapping
-    public List<ProdutosDTO> listar(@PathVariable Long restauranteId) {
+    public List<ProdutosDTO> listar(@PathVariable Long restauranteId,
+                                    @RequestParam(required = false) boolean incluirTodos) {
         Restaurante restaurante = restauranteService.buscarOuFalhar(restauranteId);
-        return produtosDTOAssembler.toListDTO(restaurante.getProdutos());
+
+        List<Produto> produtos;
+
+        if (incluirTodos) {
+            produtos = produtoRepository.findTodosByRestaurante(restaurante);
+        } else {
+            produtos = produtoRepository.findAtivosByRestaurante(restaurante);
+        }
+
+        return produtosDTOAssembler.toListDTO(produtos);
     }
 
     @GetMapping("/{produtoId}")
