@@ -9,14 +9,11 @@ import com.algafoodapi.api.model.input.PedidoInput;
 import com.algafoodapi.domain.exception.NegocioException;
 import com.algafoodapi.domain.model.Pedido;
 import com.algafoodapi.domain.model.Usuario;
+import com.algafoodapi.domain.repository.filter.PedidoFilter;
 import com.algafoodapi.domain.service.EmissaoPedidoService;
-import com.fasterxml.jackson.databind.ser.FilterProvider;
-import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
-import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
-import org.apache.commons.lang3.StringUtils;
+import com.algafoodapi.infrestructure.repository.spec.PedidoSpecs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -60,8 +57,8 @@ public class PedidoController {
 //    }
 
     @GetMapping
-    public List<PedidoResumoDTO> listar() {
-        List<Pedido> listar = pedidoService.listar();
+    public List<PedidoResumoDTO> pesquisar(PedidoFilter pedidoFilter) {
+        List<Pedido> listar = pedidoService.pesquisar(pedidoFilter);
 
         return pedidoResumoAssembler.toListDTO(listar);
     }

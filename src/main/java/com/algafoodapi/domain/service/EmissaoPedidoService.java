@@ -4,7 +4,10 @@ import com.algafoodapi.domain.exception.NegocioException;
 import com.algafoodapi.domain.exception.PedidoNaoEncontradoException;
 import com.algafoodapi.domain.model.*;
 import com.algafoodapi.domain.repository.PedidoRepository;
+import com.algafoodapi.domain.repository.filter.PedidoFilter;
+import com.algafoodapi.infrestructure.repository.spec.PedidoSpecs;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,8 +34,8 @@ public class EmissaoPedidoService {
     @Autowired
     private CadastroProdutosService produtoService;
 
-    public List<Pedido> listar() {
-        return pedidoRepository.findAll();
+    public List<Pedido> pesquisar(PedidoFilter pedidoFilter) {
+        return pedidoRepository.findAll(PedidoSpecs.usandoFiltro(pedidoFilter));
     }
 
     public Pedido buscarOuFalhar(String codigoPedido) {
