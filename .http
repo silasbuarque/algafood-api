@@ -1,0 +1,537 @@
+# AlgaFood
+
+###
+# group: Cidades
+# @name Cidades - Listar
+GET http://localhost:8080/cidades?
+    Accept=j
+#Accept: application/xml
+
+###
+# group: Cidades
+# @name Cidades - Buscar
+GET http://localhost:8080/cidades/1
+Accept: application/json
+#Accept: application/xml
+
+###
+# group: Cidades
+# @name Cidades - Deletar
+DELETE http://localhost:8080/cidades/6
+Accept: application/json
+#Accept: application/xml
+
+###
+# group: Cidades
+# @name Cidade - Salvar
+POST http://localhost:8080/cidades
+Content-Type: application/json
+
+{
+  "nome": "Paulista",
+  "estado": {
+    "id": 3
+  }
+}
+
+###
+# group: Cidades
+# @name Cidade - Atualizar
+PUT http://localhost:8080/cidades/3
+Content-Type: application/json
+
+{
+  "nome": "Abreu terra dos cornos",
+  "estado": {
+    "id": 6
+  }
+}
+
+###
+# group: Cozinhas
+# @name Cozinhas - Listar
+GET http://localhost:8080/cozinhas?
+    Accept=
+    #Accept: application/xml
+
+
+
+###
+# group: Cozinhas
+# @name Cozinhas - Buscar
+GET http://localhost:8080/cozinhas/1
+Accept: application/json
+#Accept: application/xml
+
+###
+# group: Cozinhas
+# @name Cozinhas - Salvar
+POST http://localhost:8080/cozinhas
+Content-Type: application/json
+
+{
+  "nome": "Árabe"
+}
+
+###
+# group: Cozinhas
+# @name Cozinhas - Atualizar
+PUT http://localhost:8080/cozinhas/1
+Content-Type: application/json
+
+{
+  "nome": "Brasileira"
+}
+
+###
+# group: Cozinhas
+# @name Cozinhas - Deletar
+DELETE http://localhost:8080/cozinhas/1
+Accept: application/json
+#Accept: application/xml
+
+###
+# group: Estados
+# @name Estados - Listar
+GET http://localhost:8080/estados?
+    Accept=j
+#Accept: application/xml
+
+###
+# group: Estados
+# @name Estados - Buscar
+GET http://localhost:8080/estados/4
+Accept: application/json
+#Accept: application/xml
+
+###
+# group: Estados
+# @name Estado- Deletar
+DELETE http://localhost:8080/estados/4
+Accept: application/json
+#Accept: application/xml
+
+###
+# group: Estados
+# @name Estado - Salvar
+POST http://localhost:8080/estados
+Content-Type: application/json
+
+{
+  "nome": "Pernambuco"
+}
+
+###
+# group: Estados
+# @name Estado - Atualizar
+PUT http://localhost:8080/estados/6
+Content-Type: application/json
+
+{
+  "nome": "Paraíba"
+}
+
+###
+# group: Forma de Pagamento
+# @name Forma de Pagamento - Listar
+GET http://localhost:8080/formaPagamento?
+    Accept=
+    #Accept: application/xml
+
+
+
+###
+# group: Forma de Pagamento
+# @name Forma de Pagamento - Buscar
+GET http://localhost:8080/formaPagamento/1
+Accept: application/json
+#Accept: application/xml
+
+###
+# group: Forma de Pagamento
+# @name Forma de Pagamento - Salvar
+POST http://localhost:8080/formaPagamento
+Content-Type: application/json
+
+{
+  "descricao": ""
+}
+
+###
+# group: Forma de Pagamento
+# @name Forma de Pagamento - Atualizar
+PUT http://localhost:8080/formaPagamento/4
+Content-Type: application/json
+
+{
+  "descricao": "Cheque"
+}
+
+###
+# group: Forma de Pagamento
+# @name Forma de Pagamento - Deletar
+DELETE http://localhost:8080/formaPagamento/4
+Accept: application/json
+#Accept: application/xml
+
+###
+# group: Restaurantes
+# @name Restaurante - Listar
+GET http://localhost:8080/restaurantes?
+    Accept=j
+#Accept: application/xml
+
+###
+# group: Restaurantes
+# @name Restaurante - Buscar
+GET http://localhost:8080/restaurantes/1
+Accept: application/json
+#Accept: application/xml
+
+###
+# group: Restaurantes
+# @name Restaurante - Listar formas de pagamento
+GET http://localhost:8080/restaurantes/6/formas-pagamento
+Accept: application/json
+#Accept: application/xml
+
+###
+# group: Restaurantes
+# @name Restaurante - Associar formas de pagamento
+DELETE http://localhost:8080/restaurantes/1/formas-pagamento/1
+Accept: application/json
+#Accept: application/xml
+
+###
+# group: Restaurantes
+# @name Restaurante - Associar formas de pagamento Copy
+PUT http://localhost:8080/restaurantes/1/formas-pagamento/1
+Accept: application/json
+#Accept: application/xml
+
+###
+# group: Restaurantes
+# @name Restaurantes - Salvar
+POST http://localhost:8080/restaurantes
+Content-Type: application/json
+
+{
+  "nome": "Papa Capim",
+  "taxaFrete": 15.00,
+  "cozinha": {
+    "id": 1
+  },
+  "endereco": {
+    "cep": "38400-999",
+    "logradouro": "Rua Sao Joao Batista",
+    "numero": "2",
+    "complemento": null,
+    "bairro": "Aguazinha",
+    "cidade": {
+      "id": 2
+    }
+  }
+}
+
+###
+# group: Restaurantes
+# @name Restaurantes - Atualizar
+PUT http://localhost:8080/restaurantes/7
+Content-Type: application/json
+
+{
+  "nome": "Papa Capim",
+  "taxaFrete": 20.00,
+  "cozinha": {
+    "id": 2
+  },
+  "endereco": {
+    "cep": "38400-999",
+    "logradouro": "Rua Micamia",
+    "numero": "3",
+    "complemento": null,
+    "bairro": "Jardel",
+    "cidade": {
+      "id": 3
+    }
+  }
+}
+
+###
+# group: Restaurantes
+# @name Restaurante - Atualizar Parcialmente
+# Generated from cURL: curl --request PATCH \
+#   --url http://localhost:8080/restaurantes/1 \
+#   --header 'Content-Type: application/xml' \
+#   --header 'User-Agent: insomnia/10.3.0' \
+#   --data '{
+# 	"taxaFrete":5.5,
+# 	"endereco": {
+# 		"cep":"83408-280"
+# 	}
+#
+# }'
+#PATCH http://localhost:8080/restaurantes/1
+#Content-Type: application/xml
+#User-Agent: insomnia/10.3.0
+#
+#{
+#    "taxaFrete":5.5,
+#    "endereco": {
+#        "cep":"83408-280"
+#    }
+#}
+
+###
+# group: Restaurantes
+# @name Restaurante - Desativar
+DELETE http://localhost:8080/restaurantes/1/ativacao
+
+###
+# group: Restaurantes
+# @name Restaurante - Ativar
+PUT http://localhost:8080/restaurantes/1/ativacao
+
+###
+# group: Restaurantes
+# @name Restaurante - Ativar Multiplos
+PUT http://localhost:8080/restaurantes/ativacao
+Content-Type: application/json
+
+[
+  1,
+  3,
+  4
+]
+
+###
+# group: Restaurantes
+# @name Restaurante - Inativar Multiplos
+DELETE http://localhost:8080/restaurantes/ativacao
+Content-Type: application/json
+
+[
+  1,
+  3,
+  4
+]
+
+###
+# group: Restaurantes
+# @name Restaurante - Abertura
+PUT http://localhost:8080/restaurantes/1/abertura
+
+###
+# group: Restaurantes
+# @name Restaurante - Fechamento
+PUT http://localhost:8080/restaurantes/1/abertura
+
+###
+# group: Restaurantes
+# @name Restaurante - Listar Responsaveis
+GET http://localhost:8080/restaurantes/1/responsaveis
+
+###
+# group: Restaurantes
+# @name Restaurante - Desassociar Responsavel
+DELETE http://localhost:8080/restaurantes/1/responsaveis/5
+
+###
+# group: Restaurantes
+# @name Restaurante - Associar Responsavel
+PUT http://localhost:8080/restaurantes/1/responsaveis/5
+
+###
+# group: Grupos
+# @name Grupos - Listar
+GET http://localhost:8080/grupos
+
+###
+# group: Grupos
+# @name Grupos - Buscar
+GET http://localhost:8080/grupos/1
+
+###
+# group: Grupos
+# @name Grupos - Salvar
+POST http://localhost:8080/grupos/
+Content-Type: application/json
+
+{
+}
+
+###
+# group: Grupos
+# @name Grupos - Atualizar
+PUT http://localhost:8080/grupos/5
+Content-Type: application/json
+
+{
+}
+
+###
+# group: Grupos
+# @name Grupos - Deletar
+DELETE http://localhost:8080/grupos/1
+
+###
+# group: Grupos
+# @name Grupos - Desassociar permissao
+DELETE http://localhost:8080/grupos/1/permissoes/1
+
+###
+# group: Grupos
+# @name Grupos - Associar permissao
+PUT http://localhost:8080/grupos/1/permissoes/1
+
+###
+# group: Grupos
+# @name Grupos - Listar permissoes
+GET http://localhost:8080/grupos/1/permissoes/
+
+###
+# group: Usuarios
+# @name Usuarios - Listar
+GET http://localhost:8080/usuarios/
+
+###
+# group: Usuarios
+# @name Usuarios - Listar Grupos
+GET http://localhost:8080/usuarios/
+
+###
+# group: Usuarios
+# @name Usuarios - Buscar
+GET http://localhost:8080/usuarios/1
+
+###
+# group: Usuarios
+# @name Usuarios - Adicionar
+POST http://localhost:8080/usuarios/
+Content-Type: application/json
+
+{
+  "nome": "Silas Buarque",
+  "email": "silas@email.com",
+  "senha": "abc"
+}
+
+###
+# group: Usuarios
+# @name Usuarios - Atualizar
+PUT http://localhost:8080/usuarios/5
+Content-Type: application/json
+
+{
+  "nome": "Silas Buarque",
+  "email": "silas@gmail.com"
+}
+
+###
+# group: Usuarios
+# @name Usuários - Deletar
+DELETE http://localhost:8080/usuarios/5
+
+###
+# group: Usuarios
+# @name Usuarios - Alterar senha
+PUT http://localhost:8080/usuarios/1/senha
+Content-Type: application/json
+
+{
+  "senhaAtual": "123",
+  "novaSenha": "abc"
+}
+
+###
+# group: Produtos
+# @name Produtos - Listar
+GET http://localhost:8080/restaurantes/2/produtos
+
+###
+# group: Produtos
+# @name Produtos - Buscar
+GET http://localhost:8080/restaurantes/1/produtos/2
+
+###
+# group: Produtos
+# @name Produtos - Adicionar
+POST http://localhost:8080/restaurantes/2/produtos/
+Content-Type: application/json
+
+{
+  "nome": "Feijoada",
+  "descricao": "Feijoada das brabas",
+  "preco": 80.00,
+  "ativo": true
+}
+
+###
+# group: Produtos
+# @name Produtos - Adicionar Copy
+POST http://localhost:8080/restaurantes/2/produtos/
+Content-Type: application/json
+
+{
+  "nome": "Feijoada",
+  "descricao": "Feijoada das brabas",
+  "preco": 80.00,
+  "ativo": true
+}
+
+###
+# group: Pedidos
+# @name Pedidos - Listar
+GET http://localhost:8080/pedidos?dataCriacaoInicio=2025-01-01T00:00:00Z
+
+
+###
+# group: Pedidos
+# @name Pedidos - Buscar
+GET http://localhost:8080/pedidos/ccded0a5-dd16-4899-a5d3-9b31688f69a8
+
+###
+# group: Pedidos
+# @name Pedidos - Criar
+POST http://localhost:8080/pedidos/
+Content-Type: application/json
+
+{
+  "restaurante": {
+    "id": 1
+  },
+  "formaPagamento": {
+    "id": 1
+  },
+  "enderecoEntrega": {
+    "cep": "38400-111",
+    "logradouro": "Rua Acre",
+    "numero": "300",
+    "complemento": "Casa 2",
+    "bairro": "Centro",
+    "cidade": {
+      "id": 1
+    }
+  },
+  "itens": [
+    {
+      "produtoId": 2,
+      "quantidade": 1
+    }
+  ]
+}
+
+###
+# group: Pedidos
+# @name Pedidos - Confirmar Pedido
+PUT http://localhost:8080/pedidos/ccded0a5-dd16-4899-a5d3-9b31688f69a8/confirmacao
+
+###
+# group: Pedidos
+# @name Pedidos - Entregar Pedido
+PUT http://localhost:8080/pedidos/ccded0a5-dd16-4899-a5d3-9b31688f69a8/entrega
+
+###
+# group: Pedidos
+# @name Pedidos - Cancelar Pedido
+PUT http://localhost:8080/pedidos/ccded0a5-dd16-4899-a5d3-9b31688f69a8/cancelamento
