@@ -50,8 +50,7 @@ Content-Type: application/json
 ###
 # group: Cozinhas
 # @name Cozinhas - Listar
-GET http://localhost:8080/cozinhas?
-    Accept=
+GET http://localhost:8080/cozinhas?size=2&page=1
     #Accept: application/xml
 
 
